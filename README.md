@@ -2,15 +2,21 @@
 
 Generate QR code using FastAPI
 
-# Pytest
+
+# Run all tests
+
+- Use the command: `python run_tests.py`
+
+# Run tests individually
+## Pytest
 
 - Run test with `pytest -v`
 
-# Coverage report
+## Coverage report
 
 - Run test with `coverage run -m pytest -v`
-- Then generate report with: `coverage report`
+- Then generate report with: `coverage report -m`
 
-# Pylint
+## Pylint
 
 - Run code style checks with: `pylint --extension-pkg-whitelist='pydantic' app`
