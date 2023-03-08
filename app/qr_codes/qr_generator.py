@@ -1,5 +1,6 @@
 """Module to generate QR codes."""
 import os
+import uuid
 import segno
 from PIL import Image
 
@@ -14,7 +15,7 @@ class QrGenerator:
         self._default_light_color = default_light_color or "white"
         self._default_scale = default_scale
 
-    def generate_qr_code(self, url: str, file_name: str,
+    def generate_qr_code(self, url: str,
                          dark_color: str = None,
                          light_color: str = None,
                          scale: int = None) -> str:
@@ -23,13 +24,12 @@ class QrGenerator:
 
         Args:
             url (str): The url to be encoded in the QR code.
-            file_name (str): The name of the file to be saved.
             dark_color (str, optional): The color of the dark modules. Defaults to None.
             light_color (str, optional): The color of the light modules. Defaults to None.
             scale (int, optional): The scale of the QR code. Defaults to None.
 
         Returns:
-            None
+            str: The path to the generated QR code.
         """
         if dark_color is None:
             dark_color = self._default_dark_color
@@ -40,7 +40,7 @@ class QrGenerator:
         if scale is None:
             scale = self._default_scale
 
-        file_path = self.file_path(file_name)
+        file_path = self._generate_file_path()
 
         qr = segno.make_qr(url, error='H')
         qr.save(file_path, dark=dark_color, light=light_color, scale=scale)
@@ -49,7 +49,7 @@ class QrGenerator:
 
     def _add_logo(self, file_path: str, logo_path: str):
         qr_img = Image.open(file_path).convert("RGBA")
-        logo_img = Image.open(logo_path)        
+        logo_img = Image.open(logo_path)
 
         box = self.__get_logo_box(qr_img.size, logo_img.size)
         qr_img.crop(box)
@@ -57,7 +57,7 @@ class QrGenerator:
         region = logo_img.resize((box[2] - box[0], box[3] - box[1]))
 
         # set background color to logo
-        background = Image.new('RGB', region.size, (255,255,255))
+        background = Image.new('RGB', region.size, (255, 255, 255))
         background.paste(region, region)
 
         qr_img.paste(background, box)
@@ -74,7 +74,9 @@ class QrGenerator:
 
         return (A, B, C, D)
 
-    def file_path(self, file_name: str) -> str:
+    def _generate_file_path(self) -> str:
+        file_name = uuid.uuid4().hex
+
         return f'{self._folder_path}/{file_name}.png'
 
     def _mkdir_if_no_exists(self, path: str) -> str:
