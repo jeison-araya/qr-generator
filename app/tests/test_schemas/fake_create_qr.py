@@ -4,7 +4,7 @@
 def build_json():
     """Create fake QR code schema."""
     return {
-        "url": "https://www.google.com",
+        "url": "https://www.example.com",
         "dark_color": "#000000",
         "light_color": "#FFFFFF",
         "scale": 10

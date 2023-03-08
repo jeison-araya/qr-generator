@@ -1,22 +1,46 @@
 """Create QR Schema"""
-from pydantic import BaseModel, validator
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from bson import ObjectId
+
+from pydantic import BaseModel, Field, validator
+
+from app.schemas.py_object_id import PyObjectId
 
 
 class CreateQR(BaseModel):
     """
     # Create QR Schema
-    
+
     ## Args:
-    
+
         * url (str): The url to be encoded in the QR code.
         * dark_color (str, optional): The color of the dark modules. Defaults to #000000.
         * light_color (str, optional): The color of the light modules. Defaults to #FFFFFF.
         * scale (int, optional): The scale of the QR code (1-60). Defaults to 10.
     """
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     url: str
     dark_color: str = '#000000'
     light_color: str = '#FFFFFF'
     scale: int = 10
+    created_at: str = Field(default=datetime.now(
+        timezone.utc).strftime('%Y-%m-%d %H:%M:%S'))
+
+    @dataclass
+    class Config:
+        """Pydantic config"""
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            'example': {
+                'url': 'https://www.example.com',
+                'dark_color': '#000000',
+                'light_color': '#FFFFFF',
+                'scale': 10
+            }
+        }
 
     @validator('dark_color')
     @classmethod

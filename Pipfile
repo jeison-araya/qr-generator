@@ -7,12 +7,17 @@ name = "pypi"
 segno = "*"
 fastapi = {extras = ["all"], version = "*"}
 pillow = "*"
+motor = "*"
+pymongo = "*"
 
 [dev-packages]
 autopep8 = "*"
 pytest = "*"
 coverage = "*"
 pylint = "*"
+python-dotenv = "*"
+mongomock-motor = "*"
+mongomock = "*"
 
 [requires]
 python_version = "3.10"

@@ -7,7 +7,7 @@ import pytest
 
 from app.qr_codes.qr_generator import QrGenerator
 
-FOLDER_PATH = "test_app/static/qr_codes"
+FOLDER_PATH = "app/tests/static/qr_codes"
 
 
 class TestQrGenerator:
@@ -20,7 +20,7 @@ class TestQrGenerator:
         Test generate QR code.
         """
         file_path = qr_generator.generate_qr_code(
-            "https://www.google.com", "#000000", "#FFFFFF", 10)
+            "https://www.example.com", "#000000", "#FFFFFF", 10)
 
         assert exists(file_path)
 
@@ -28,7 +28,7 @@ class TestQrGenerator:
         """
         Test generate QR code with default values.
         """
-        file_path = qr_generator.generate_qr_code("https://www.google.com")
+        file_path = qr_generator.generate_qr_code("https://www.example.com")
 
         assert exists(file_path)
 

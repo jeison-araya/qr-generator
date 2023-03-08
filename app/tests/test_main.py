@@ -1,16 +1,16 @@
 """Testing the main module."""
+import pytest
 from fastapi.testclient import TestClient
 
-from app.main import app
+from app.main import app, get_db
+from app.tests.test_database import override_get_db
 from app.tests.test_schemas import fake_create_qr
-
-client = TestClient(app)
 
 
 class TestMain():
     """Testing the main module."""
 
-    def test_generate_qr_code(self):
+    def test_generate_qr_code(self, client: TestClient):
         """Testing generate qr code."""
         json = fake_create_qr.build_json()
 
@@ -18,7 +18,7 @@ class TestMain():
 
         assert response.status_code == 201
 
-    def test_generate_qr_code_with_invalid_dark_color(self):
+    def test_generate_qr_code_with_invalid_dark_color(self, client: TestClient):
         """Testing generate qr code with invalid dark color."""
         json = fake_create_qr.build_json()
         json['dark_color'] = "000000"
@@ -36,7 +36,7 @@ class TestMain():
             ]
         }
 
-    def test_generate_qr_code_with_invalid_light_color(self):
+    def test_generate_qr_code_with_invalid_light_color(self, client: TestClient):
         """Testing generate qr code with invalid light color."""
         json = fake_create_qr.build_json()
         json['light_color'] = "FFFFFF"
@@ -54,7 +54,7 @@ class TestMain():
             ]
         }
 
-    def test_generate_qr_code_with_invalid_scale(self):
+    def test_generate_qr_code_with_invalid_scale(self, client: TestClient):
         """Testing generate qr code with invalid scale."""
         json = fake_create_qr.build_json()
         json['scale'] = 5
@@ -71,3 +71,12 @@ class TestMain():
                 }
             ]
         }
+
+
+@pytest.fixture(name="client", scope="session", autouse=True)
+def _client():
+    """Client."""
+    app.dependency_overrides[get_db] = override_get_db
+
+    with TestClient(app) as client:
+        yield client
