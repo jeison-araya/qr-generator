@@ -4,18 +4,19 @@ from pydantic import BaseModel, validator
 
 class CreateQR(BaseModel):
     """
-    Create QR Schema
+    # Create QR Schema
     
-    Args:
-        url (str): The url to be encoded in the QR code.
-        dark_color (str, optional): The color of the dark modules. Defaults to #000000.
-        light_color (str, optional): The color of the light modules. Defaults to #FFFFFF.
-        size (int, optional): The scale of the QR code (1-60). Defaults to 10.
+    ## Args:
+    
+        * url (str): The url to be encoded in the QR code.
+        * dark_color (str, optional): The color of the dark modules. Defaults to #000000.
+        * light_color (str, optional): The color of the light modules. Defaults to #FFFFFF.
+        * scale (int, optional): The scale of the QR code (1-60). Defaults to 10.
     """
     url: str
     dark_color: str = '#000000'
     light_color: str = '#FFFFFF'
-    size: int = 10
+    scale: int = 10
 
     @validator('dark_color')
     def _validate_dark_color(cls, v):
@@ -25,10 +26,10 @@ class CreateQR(BaseModel):
     def _validate_light_color(cls, v):
         return cls._validate_hex_color(cls, v)
 
-    @validator('size')
-    def _validate_size(cls, v):
+    @validator('scale')
+    def _validate_scale(cls, v):
         if v < 6 or v > 40:
-            raise ValueError('size must be between 6 and 40')
+            raise ValueError('scale must be between 6 and 40')
         return v
 
     def _validate_hex_color(self, v):
