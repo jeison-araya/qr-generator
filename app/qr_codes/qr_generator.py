@@ -1,19 +1,17 @@
 """Module to generate QR codes."""
 import os
 import uuid
+
 import segno
 from PIL import Image
 
 
 class QrGenerator:
-    def __init__(self, folder_path: str,
-                 default_dark_color: str = None,
-                 default_light_color: str = None,
-                 default_scale: int = 10) -> None:
+    def __init__(self, folder_path: str) -> None:
         self._folder_path = self._mkdir_if_no_exists(folder_path)
-        self._default_dark_color = default_dark_color or "black"
-        self._default_light_color = default_light_color or "white"
-        self._default_scale = default_scale
+        self._default_dark_color = "#000000"
+        self._default_light_color = "#FFFFFF"
+        self._default_scale = 10
 
     def generate_qr_code(self, url: str,
                          dark_color: str = None,
@@ -29,7 +27,7 @@ class QrGenerator:
             scale (int, optional): The scale of the QR code. Defaults to None.
 
         Returns:
-            str: The path to the generated QR code.
+            
         """
         if dark_color is None:
             dark_color = self._default_dark_color
@@ -44,7 +42,7 @@ class QrGenerator:
 
         qr = segno.make_qr(url, error='H')
         qr.save(file_path, dark=dark_color, light=light_color, scale=scale)
-        self._add_logo(file_path, 'app\static\images\logo.png')
+        self._add_logo(file_path, 'app/static/images/logo.png')
         return file_path
 
     def _add_logo(self, file_path: str, logo_path: str):
@@ -83,6 +81,6 @@ class QrGenerator:
         try:
             os.mkdir(path)
         except FileExistsError:
-            print(f'Folder {path} already exists.')
+            pass
         finally:
             return path
