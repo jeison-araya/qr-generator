@@ -1,6 +1,6 @@
 # qr-generator
-Generate QR code using FastAPI
 
+Generate QR code using FastAPI
 
 # Pytest
 
@@ -10,3 +10,7 @@ Generate QR code using FastAPI
 
 - Run test with `coverage run -m pytest -v`
 - Then generate report with: `coverage report`
+
+# Pylint
+
+- Run code style checks with: `pylint --extension-pkg-whitelist='pydantic' app`

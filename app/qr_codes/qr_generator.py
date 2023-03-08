@@ -7,6 +7,10 @@ from PIL import Image
 
 
 class QrGenerator:
+    """
+    Class to generate QR codes.
+    """
+
     def __init__(self, folder_path: str) -> None:
         self._folder_path = folder_path
         self._default_dark_color = "#000000"
@@ -29,7 +33,7 @@ class QrGenerator:
             scale (int, optional): The scale of the QR code. Defaults to None.
 
         Returns:
-
+            str: The file path of the QR code.
         """
         if dark_color is None:
             dark_color = self._default_dark_color
@@ -42,8 +46,9 @@ class QrGenerator:
 
         file_path = self._generate_file_path()
 
-        qr = segno.make_qr(url, error='H')
-        qr.save(file_path, dark=dark_color, light=light_color, scale=scale)
+        qr_code = segno.make_qr(url, error='H')
+        qr_code.save(file_path, dark=dark_color,
+                     light=light_color, scale=scale)
         self._add_logo(file_path, 'app/static/images/logo.png')
         return file_path
 
@@ -67,12 +72,12 @@ class QrGenerator:
         qr_w, qr_h = qr_size
         logo_w, logo_h = logo_size
 
-        A = int(qr_w / 2 - logo_w / 2)
-        B = int(qr_h / 2 - logo_h / 2)
-        C = int(qr_w / 2 + logo_w / 2)
-        D = int(qr_h / 2 + logo_h / 2)
-
-        return (A, B, C, D)
+        return (
+            int(qr_w / 2 - logo_w / 2),
+            int(qr_h / 2 - logo_h / 2),
+            int(qr_w / 2 + logo_w / 2),
+            int(qr_h / 2 + logo_h / 2)
+        )
 
     def _generate_file_path(self) -> str:
         file_name = uuid.uuid4().hex

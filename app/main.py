@@ -1,3 +1,6 @@
+"""
+FastAPI app
+"""
 from os import remove
 
 from fastapi import FastAPI
@@ -19,6 +22,15 @@ async def generate_qr_code(
     create_qr: CreateQR,
     background_job: BackgroundTasks
 ):
+    """
+    # Generate QR code.
+
+    ## Parameters:
+        - create_qr: CreateQR: Create QR code schema.
+
+    ## Returns:
+        - FileResponse: QR code image.
+    """
     file_path = qr_generator.generate_qr_code(
         create_qr.url, create_qr.dark_color, create_qr.light_color, create_qr.scale)
 
