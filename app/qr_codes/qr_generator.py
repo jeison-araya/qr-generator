@@ -1,5 +1,5 @@
 """Module to generate QR codes."""
-import os
+from os import makedirs
 import uuid
 
 import segno
@@ -8,10 +8,12 @@ from PIL import Image
 
 class QrGenerator:
     def __init__(self, folder_path: str) -> None:
-        self._folder_path = self._mkdir_if_no_exists(folder_path)
+        self._folder_path = folder_path
         self._default_dark_color = "#000000"
         self._default_light_color = "#FFFFFF"
         self._default_scale = 10
+
+        makedirs(folder_path, exist_ok=True)
 
     def generate_qr_code(self, url: str,
                          dark_color: str = None,
@@ -27,7 +29,7 @@ class QrGenerator:
             scale (int, optional): The scale of the QR code. Defaults to None.
 
         Returns:
-            
+
         """
         if dark_color is None:
             dark_color = self._default_dark_color
@@ -76,11 +78,3 @@ class QrGenerator:
         file_name = uuid.uuid4().hex
 
         return f'{self._folder_path}/{file_name}.png'
-
-    def _mkdir_if_no_exists(self, path: str) -> str:
-        try:
-            os.mkdir(path)
-        except FileExistsError:
-            pass
-        finally:
-            return path
