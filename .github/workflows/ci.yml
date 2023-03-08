@@ -29,4 +29,8 @@ jobs:
       - name: Test coverage
         run: |
           coverage run -m pytest -v
-          coverage report
+          coverage report -m
+
+      - name: Pylint test
+        run: |
+          pylint --extension-pkg-whitelist="pydantic" app
