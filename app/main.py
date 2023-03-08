@@ -1,8 +1,6 @@
 """
 FastAPI app
 """
-from os import remove
-
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -34,6 +32,6 @@ async def generate_qr_code(
     file_path = qr_generator.generate_qr_code(
         create_qr.url, create_qr.dark_color, create_qr.light_color, create_qr.scale)
 
-    background_job.add_task(remove, file_path)
+    background_job.add_task(qr_generator.clear_qr_codes)
 
     return FileResponse(file_path, status_code=201)

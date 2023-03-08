@@ -1,6 +1,7 @@
 """Module to generate QR codes."""
-from os import makedirs
 import uuid
+from os import makedirs
+from shutil import rmtree
 
 import segno
 from PIL import Image
@@ -17,7 +18,7 @@ class QrGenerator:
         self._default_light_color = "#FFFFFF"
         self._default_scale = 10
 
-        makedirs(folder_path, exist_ok=True)
+        self.clear_qr_codes()
 
     def generate_qr_code(self, url: str,
                          dark_color: str = None,
@@ -49,8 +50,17 @@ class QrGenerator:
         qr_code = segno.make_qr(url, error='H')
         qr_code.save(file_path, dark=dark_color,
                      light=light_color, scale=scale)
+
         self._add_logo(file_path, 'app/static/images/logo.png')
+
         return file_path
+
+    def clear_qr_codes(self):
+        """
+        Clear QR codes.
+        """
+        rmtree(self._folder_path, ignore_errors=True)
+        makedirs(self._folder_path, exist_ok=True)
 
     def _add_logo(self, file_path: str, logo_path: str):
         qr_img = Image.open(file_path).convert("RGBA")
