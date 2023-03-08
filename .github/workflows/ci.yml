@@ -26,6 +26,11 @@ jobs:
           pip uninstall pipenv -y
           pip install -r requirements.txt
 
+      - name: Configure environment variables
+
+        run: |
+          cp .env.example .env
+
       - name: Test coverage
         run: |
           coverage run -m pytest -v
