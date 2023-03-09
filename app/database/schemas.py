@@ -1,6 +1,8 @@
 """
 Helper class to convert ObjectId to string and vice versa
 """
+from dataclasses import dataclass
+
 from bson import ObjectId
 
 
@@ -20,3 +22,11 @@ class PyObjectId(ObjectId):
     @classmethod
     def __modify_schema__(cls, field_schema):
         field_schema.update(type="string")
+
+
+@dataclass
+class BaseConfig:
+    """Pydantic config"""
+    allow_population_by_field_name = True
+    arbitrary_types_allowed = True
+    json_encoders = {ObjectId: str}

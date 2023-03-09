@@ -1,7 +1,7 @@
-"""Create fake QR code schema."""
+"""Create mock QR code schema."""
 
 
-def build_json():
+def qr_code_mock():
     """Create fake QR code schema."""
     return {
         "url": "https://www.example.com",

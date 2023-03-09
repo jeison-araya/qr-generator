@@ -1,8 +1,8 @@
 """Testing create qr schema."""
 import pytest
 
-from app.schemas.create_qr import CreateQR
-from app.tests.test_schemas import fake_create_qr
+from app.qr_codes.schemas import CreateQR
+from . import mocks
 
 
 class TestCreateQr():
@@ -52,4 +52,4 @@ class TestCreateQr():
 @pytest.fixture(name='create_qr_json')
 def _create_qr_json():
     """Create fake create qr schema."""
-    return fake_create_qr.build_json()
+    return mocks.qr_code_mock()

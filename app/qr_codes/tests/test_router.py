@@ -1,29 +1,30 @@
-"""Testing the main module."""
+"""Testing the qr codes router."""
 import pytest
 from fastapi.testclient import TestClient
 
-from app.main import app, get_db
-from app.tests.test_database import override_get_db
-from app.tests.test_schemas import fake_create_qr
+from app.main import app
+from app.database.connection import get_db
+from app.database.tests.test_connection import override_get_db
+from . import mocks
 
 
-class TestMain():
-    """Testing the main module."""
+class TestQRCodesRouter():
+    """Testing the QR codes router."""
 
     def test_generate_qr_code(self, client: TestClient):
         """Testing generate qr code."""
-        json = fake_create_qr.build_json()
+        json = mocks.qr_code_mock()
 
-        response = client.post("/qr/", json=json)
+        response = client.post("/qr_codes/", json=json)
 
         assert response.status_code == 201
 
     def test_generate_qr_code_with_invalid_dark_color(self, client: TestClient):
         """Testing generate qr code with invalid dark color."""
-        json = fake_create_qr.build_json()
+        json = mocks.qr_code_mock()
         json['dark_color'] = "000000"
 
-        response = client.post("/qr/", json=json)
+        response = client.post("/qr_codes/", json=json)
 
         assert response.status_code == 422
         assert response.json() == {
@@ -38,10 +39,10 @@ class TestMain():
 
     def test_generate_qr_code_with_invalid_light_color(self, client: TestClient):
         """Testing generate qr code with invalid light color."""
-        json = fake_create_qr.build_json()
+        json = mocks.qr_code_mock()
         json['light_color'] = "FFFFFF"
 
-        response = client.post("/qr/", json=json)
+        response = client.post("/qr_codes/", json=json)
 
         assert response.status_code == 422
         assert response.json() == {
@@ -56,10 +57,10 @@ class TestMain():
 
     def test_generate_qr_code_with_invalid_scale(self, client: TestClient):
         """Testing generate qr code with invalid scale."""
-        json = fake_create_qr.build_json()
+        json = mocks.qr_code_mock()
         json['scale'] = 5
 
-        response = client.post("/qr/", json=json)
+        response = client.post("/qr_codes/", json=json)
 
         assert response.status_code == 422
         assert response.json() == {
