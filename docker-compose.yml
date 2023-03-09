@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  fastapi:
+    build: .
+    container_name: qr-generator-api
+    volumes:
+      - qr_generator_volume:/code
+    ports:
+      - "8000:80"
+    env_file:
+      - ./.env
+    networks:
+      - qr_generator_netwrok
+
+volumes:
+  qr_generator_volume:
+
+networks:
+  qr_generator_netwrok:
