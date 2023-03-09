@@ -25,7 +25,7 @@ class CreateQR(BaseModel):
     light_color: str = '#FFFFFF'
     scale: int = 10
     created_at: str = Field(default=datetime.now(
-        timezone.utc).strftime('%Y-%m-%d %H:%M:%S'))
+        timezone.utc))
 
     @dataclass
     class Config:
