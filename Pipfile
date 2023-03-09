@@ -18,6 +18,7 @@ pylint = "*"
 python-dotenv = "*"
 mongomock-motor = "*"
 mongomock = "*"
+pytest-asyncio = "*"
 
 [requires]
 python_version = "3.10"
