@@ -39,3 +39,8 @@ jobs:
       - name: Pylint test
         run: |
           pylint --extension-pkg-whitelist="pydantic" app
+
+      - name: Running Docker build
+        env:
+          DOCKER_BUILDKIT: 1
+        run: docker build .
