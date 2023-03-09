@@ -2,6 +2,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
 from fastapi.background import BackgroundTasks
+from fastapi.staticfiles import StaticFiles
 
 
 from app.database.connection import get_db
@@ -9,6 +10,8 @@ from app.qr_codes.schemas import CreateQR
 from app.qr_codes import service, crud
 
 router = APIRouter(prefix='/qr_codes', tags=['QR Codes'])
+
+router.mount("/static", StaticFiles(directory="app/qr_codes/static"), name="static")
 
 
 @router.post("/", status_code=201)

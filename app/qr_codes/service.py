@@ -3,7 +3,7 @@ import segno
 
 from app.qr_codes.util import generate_file_path, clear_folder
 
-FOLDER_PATH = 'app/static/qr_codes'
+FOLDER_PATH = 'app/qr_codes/static'
 DEFAULT_DARK_COLOR = '#000000'
 DEFAULT_LIGHT_COLOR = '#FFFFFF'
 DEFAULT_SCALE = 10
